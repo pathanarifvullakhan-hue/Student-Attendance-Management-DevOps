@@ -23,7 +23,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t student-attendance:latest .'
+                sh 'docker build -t student-attendance-devops:1.0 .'
             }
         }
     }
