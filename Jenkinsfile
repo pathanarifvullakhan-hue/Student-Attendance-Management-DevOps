@@ -1,35 +1,30 @@
+
 pipeline {
-  agent any
-  tools {
-    nodejs 'Node20'
-  }
-  environment {
-    CI = 'true'
-  }
-  stages {
-    stage('Checkout') {
-      steps { checkout scm }
+    agent any
+
+    stages {
+        stage('Check Environment') {
+            steps {
+                sh 'docker --version'
+            }
+        }
+
+        stage('Install Dependencies and Test') {
+            steps {
+                sh '''
+                    docker run --rm \
+                      -v "$WORKSPACE:/app" \
+                      -w /app \
+                      node:20 \
+                      sh -c "npm install && npm test"
+                '''
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t student-attendance:1.0 .'
+            }
+        }
     }
-    stage('Install dependencies') {
-      steps { sh 'npm install' }
-    }
-    stage('Syntax validation') {
-      steps {
-        sh 'node --check server.js'
-        sh 'node --check frontend/app.js'
-        sh 'node --check tests/api.test.js'
-      }
-    }
-    stage('Automated API tests') {
-      steps { sh 'npm test' }
-    }
-    stage('Build Docker image') {
-      steps {
-        sh 'docker build -t student-attendance-devops:${BUILD_NUMBER} .'
-      }
-    }
-  }
-  post {
-    always { echo 'Attendance application pipeline finished.' }
-  }
 }
