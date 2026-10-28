@@ -15,7 +15,7 @@ pipeline {
                     docker run --rm \
                         --volumes-from jenkins \
                         -w "$WORKSPACE" \
-                        node:22 \
+                        node:20 \
                         sh -c "npm install && npm test"
                 '''
             }
