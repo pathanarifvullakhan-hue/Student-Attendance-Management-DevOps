@@ -12,13 +12,18 @@ pipeline {
         stage('Install Dependencies and Test') {
             steps {
                 sh '''
-                    docker run --rm --volumes-from jenkins -w "${WORKSPACE}" node:20 sh -c 'npm install && npm test'''
+                    docker run --rm \
+                        --volumes-from jenkins \
+                        -w "$WORKSPACE" \
+                        node:22 \
+                        sh -c "npm install && npm test"
+                '''
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t student-attendance:1.0 .'
+                sh 'docker build -t student-attendance:latest .'
             }
         }
     }
