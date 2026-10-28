@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Attendance Management System</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">SA</div>
+    <div><h1>Student Attendance</h1><p>Seven-period attendance and monthly reports</p></div>
+    <span id="apiStatus" class="status">Checking connection…</span>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <div><p class="eyebrow">FACULTY DASHBOARD</p><h2>Attendance overview</h2><p>Manage your class attendance from one place.</p></div>
+      <div class="hero-date"><label for="attendanceDate">Attendance date</label><input id="attendanceDate" type="date"></div>
+    </section>
+    <div id="message" class="message hidden" role="status"></div>
+    <nav class="tabs" aria-label="Project modules">
+      <button class="tab active" data-tab="studentsPanel">Students</button>
+      <button class="tab" data-tab="attendancePanel">Daily Attendance</button>
+      <button class="tab" data-tab="reportsPanel">Monthly Reports</button>
+      <button class="tab" data-tab="historyPanel">Daily History</button>
+    </nav>
+
+    <section id="studentsPanel" class="panel">
+      <div class="section-heading"><div><h2>Student management</h2><p>Add students or update their details.</p></div></div>
+      <form id="studentForm" class="student-form">
+        <input type="hidden" id="studentId">
+        <label>Roll number<input id="rollNo" required maxlength="40" placeholder="e.g. 23911A6601"></label>
+        <label>Student name<input id="studentName" required maxlength="100" placeholder="Full name"></label>
+        <label>Department<input id="department" required maxlength="100" placeholder="e.g. CSE (AI&ML)"></label>
+        <button class="primary" type="submit" id="studentSubmit">Add student</button>
+        <button class="secondary hidden" type="button" id="cancelEdit">Cancel edit</button>
+      </form>
+      <div class="table-wrap"><table><thead><tr><th>Roll number</th><th>Name</th><th>Department</th><th>Action</th></tr></thead><tbody id="studentRows"></tbody></table></div>
+      <p id="studentCount" class="muted"></p>
+    </section>
+
+    <section id="attendancePanel" class="panel hidden">
+      <div class="section-heading"><div><h2>Daily attendance</h2><p>Mark each student's status for all seven periods.</p></div><div class="actions"><button id="allPresent" class="secondary">Mark all present</button><button id="allAbsent" class="secondary">Mark all absent</button></div></div>
+      <div class="notice">Choose Present or Absent for every period before saving. You can correct and save an existing date again.</div>
+      <div class="table-wrap"><table class="attendance-table"><thead id="attendanceHead"></thead><tbody id="attendanceRows"></tbody></table></div>
+      <div class="footer-actions"><span id="attendanceSaved" class="muted"></span><button id="saveAttendance" class="primary">Save attendance</button></div>
+    </section>
+
+    <section id="reportsPanel" class="panel hidden">
+      <div class="section-heading"><div><h2>Monthly attendance report</h2><p>Calculate working periods, attended periods, absences and percentage.</p></div></div>
+      <div class="filters"><label>Month<input id="reportMonth" type="month"></label><label>Low-attendance threshold (%)<input id="threshold" type="number" min="0" max="100" value="75"></label><button id="loadReport" class="primary">Generate report</button><a id="downloadCsv" class="button-link" href="#">Export CSV</a></div>
+      <div id="reportSummary" class="summary-cards"></div>
+      <div class="table-wrap"><table><thead><tr><th>Roll number</th><th>Name</th><th>Department</th><th>Working periods</th><th>Attended</th><th>Absent</th><th>Attendance</th><th>Status</th></tr></thead><tbody id="reportRows"></tbody></table></div>
+      <p class="muted">Rule: each saved attendance date counts as a working day with seven working periods.</p>
+    </section>
+
+    <section id="historyPanel" class="panel hidden">
+      <div class="section-heading"><div><h2>Daily attendance history</h2><p>Retrieve saved attendance dates for a selected month.</p></div></div>
+      <div class="filters"><label>Month<input id="historyMonth" type="month"></label><button id="loadHistory" class="primary">Load history</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Date</th><th>Attendance entries</th><th>Present</th><th>Absent</th><th>Export</th></tr></thead><tbody id="historyRows"></tbody></table></div>
+    </section>
+    <footer>Student Attendance Management System · DevOps project</footer>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+services:
+  attendance-app:
+    build: .
+    image: student-attendance-devops:1.0
+    container_name: student-attendance-app
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_PATH: /app/data/attendance.db
+    volumes:
+      - attendance-data:/app/data
+    restart: unless-stopped
+volumes:
+  attendance-data:
