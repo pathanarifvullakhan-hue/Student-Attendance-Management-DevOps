@@ -12,12 +12,7 @@ pipeline {
         stage('Install Dependencies and Test') {
             steps {
                 sh '''
-                    docker run --rm \
-                      -v "$WORKSPACE:/app" \
-                      -w /app \
-                      node:20 \
-                      sh -c "npm install && npm test"
-                '''
+                    docker run --rm --volumes-from jenkins -w "${WORKSPACE}" node:20 sh -c 'npm install && npm test'''
             }
         }
 
